@@ -24,8 +24,29 @@ services:
       MYSQL_PASSWORD: 'npm'
     volumes:
       - ./data/mysql:/var/lib/mysql
+  mysqldb:
+    container_name: mysqldb
+    image: 'mysql:8.0'
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=youtube
+    ports:
+      - "3307:3306"
+  backend:
+    container_name: backend
+    image: '99fotopl/backend:latest'
+    ports:
+      - "5000:5000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/youtube?useUnicode=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "password"   
+    depends_on:
+      - mysqldb
   portfolio:
     container_name: portfolio
-    image: '99fotopl/nextjs-docker:latest'
+    image: '99fotopl/portfolio:300'
     ports:
       - "3000:3000"
+    depends_on:
+      - backend
