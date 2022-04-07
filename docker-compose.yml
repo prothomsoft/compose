@@ -26,6 +26,11 @@ services:
       - ./data/mysql:/var/lib/mysql
   portfolio:
     container_name: portfolio
-    image: '99fotopl/nextjs-docker:latest'
+    image: 'nextjs-docker:latest'
     ports:
       - "3000:3000"
+  backend:
+    container_name: backend
+    image: 'backend-docker:latest'
+    ports:
+      - "5000:5000"
